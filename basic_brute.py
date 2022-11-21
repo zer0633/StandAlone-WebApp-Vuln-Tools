@@ -1,4 +1,4 @@
-mport requests
+import requests
 import sys
 
 target = "http://testphp.vulnweb.com/"
