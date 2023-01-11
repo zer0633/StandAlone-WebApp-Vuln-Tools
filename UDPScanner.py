@@ -1,17 +1,25 @@
 from scapy.all import *
-from  multiprocessing import Pool, cpu_count
+from threading import Thread
 import time
-host = input("please enter an ip Address: ")
-port = (1,65535)
-def udpscan(port):
-	for port in range(port):
-		ans = sr1(IP(dst=host)/UDP(dport=port),verbose =0)
-		time.sleep(0.7)
-		if ans == None:
-			print (port)
-		else:
-			print(port)
 
-num_cpu = max(1,cpu_count() - 1)
-with Pool(num_cpu) as mp_pool:
-        mp_pool.map(udpscan,port)
+host = input("please enter an ip Address: ")
+threads = 10
+
+
+def udpscan(host,port):
+	src_port = RandShort()
+	ans, unans = sr(IP(dst=host)/UDP(sport=src_port, dport=port),verbose=0,timeout=2)
+	for sent,received in ans:
+		if received.haslayer(UDP) and received[UDP].sport==port:
+			print(f"Port {port} is open")
+
+all_threads = []
+ports = range(1,65535)
+
+for port in ports:
+	thread = Thread(target=udpscan, args=(host,port))
+	thread.start()
+	all_threads.append(thread)
+
+
+print("All ports have been scanned")
