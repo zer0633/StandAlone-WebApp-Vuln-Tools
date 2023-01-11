@@ -1,17 +1,24 @@
 from scapy.all import *
-from  multiprocessing import Pool, cpu_count
+from threading import Thread
+from tqdm import tqdm
 
-host = input("please enter an ip Address: ")
-port = (1,65535)
-def syn(port):
-	for port in range(port):
-		ans = sr1(IP(dst=host)/TCP(dport=(port),flags="S"),verbose=0)
-		if int(ans[TCP].flags) == 18:
-			print (port)
+target_ip = input("Please enter an ip: ")
+threads = 50
+
+def syn_scan(target_ip,port):
+    src_port = RandShort()
+    packet = sr1(IP(dst=target_ip)/TCP(sport=src_port, dport=port, flags="S"),verbose=0)
+    if packet[TCP].flags == 18:
+        print(f"Port {port} is open")
+
+all_threads = []
+ports = range(1, 65535)
 
 
-num_cpu = max(1,cpu_count() - 1)
-with Pool(num_cpu) as mp_pool:
-	mp_pool.map(syn,port)
+for port in ports:
+	thread = Thread(target=syn_scan, args=(target_ip,port))
+	thread.daemon = True
+	thread.start()
+	all_threads.append(thread)
 
-
+print("All ports have been scanned")
