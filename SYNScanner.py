@@ -1,6 +1,5 @@
 from scapy.all import *
 from threading import Thread
-from tqdm import tqdm
 
 target_ip = input("Please enter an ip: ")
 threads = 50
