@@ -53,7 +53,7 @@ write-Host "`n now more through with accesschk `n" -ForegroundColor green
 $i =  get-service
 
 foreach ($name in $i)
-{c:\users\user\Desktop\accesschk.exe /accepteula -uwcqv $env:USERNAME  $name | select-string -pattern 'SERVICE_CHANGE_CONFIG' -Context 3,0 | findstr /v "QUERY"}
+{c:\Windows\Temp\accesschk.exe /accepteula -uwcqv $env:USERNAME  $name | select-string -pattern 'SERVICE_CHANGE_CONFIG' -Context 3,0 | findstr /v "QUERY"}
 
 if($name -ne $null)
 {
@@ -69,10 +69,10 @@ write-host "note (check for writable BINARY_PATH_NAME BY EVERYONE if applicable 
 write-host "copy C:\Users\$env:username\reverse.exe " "c:\binary path" "/Y `n" -ForegroundColor green
 $z = get-service
 foreach ($val in $z)
-{C:\users\user\Desktop\accesschk.exe /accepteula -ucqv $val  |  select-string -pattern Medium,Everyone,Users -context 2,0 | findstr /v NT | findstr /v SYSTEM | findstr /v Administrators  | findstr /v Medium  |findstr /v vds | findstr /v smphost | findstr /v RSoPProv | findstr /v RemoteAccess | findstr /v MapsBroker | findstr /v NetTcpPortSharing|findstr /v DsSvc | findstr /v DllsvC   | findstr /v "SERVICE_QUERY_STATUS"  | findstr /v "SERVICE_INTERROGATE" | findstr /v "SERVICE_ENUMERATE_DEPENDENTS" | findstr /v "SERVICE_START" | findstr /v "READ_CONTROL" | findstr /v "SERVICE_PAUSE_CONTINUE" | findstr /v "SERVICE_STOP" | findstr /v "SERVICE_USER_DEFINED_CONTROL" |  findstr /v "WRITE_DAC" | findstr /v "OWNER" | findstr /V SERVICE_QUERY_CONFIG  | select-String -pattern SERVICE_ALL_ACCESS -context 1,1 >>  "C:\Users\$env:Username\Desktop\services.ps1"}
+{C:\Windows\Temp\accesschk.exe /accepteula -ucqv $val  |  select-string -pattern Medium,Everyone,Users -context 2,0 | findstr /v NT | findstr /v SYSTEM | findstr /v Administrators  | findstr /v Medium  |findstr /v vds | findstr /v smphost | findstr /v RSoPProv | findstr /v RemoteAccess | findstr /v MapsBroker | findstr /v NetTcpPortSharing|findstr /v DsSvc | findstr /v DllsvC   | findstr /v "SERVICE_QUERY_STATUS"  | findstr /v "SERVICE_INTERROGATE" | findstr /v "SERVICE_ENUMERATE_DEPENDENTS" | findstr /v "SERVICE_START" | findstr /v "READ_CONTROL" | findstr /v "SERVICE_PAUSE_CONTINUE" | findstr /v "SERVICE_STOP" | findstr /v "SERVICE_USER_DEFINED_CONTROL" |  findstr /v "WRITE_DAC" | findstr /v "OWNER" | findstr /V SERVICE_QUERY_CONFIG  | select-String -pattern SERVICE_ALL_ACCESS -context 1,1 >>  "C:\Windows\Temp\services.ps1"}
 
-Get-Content "C:\Users\$env:username\Desktop\services.ps1" | select-string -pattern "Everyone","SERVICE_ALL_ACCESS","Users","dllsvc","dllhijackingservice.exe","RasAuto","Schedule",'^\s*$' -NotMatch >> "C:\Users\$env:Username\Desktop\serv.ps1"
-Get-Content "C:\Users\$env:Username\Desktop\serv.ps1" |  foreach-object {$_.Trim()}|ForEach-Object{cmd.exe /c sc.exe qc $_} | select-string -pattern "SERVICE_NAME","START_TYPE","BINARY_PATH_NAME","SERVICE_START_NAME"
+Get-Content "C:\Windows\Temp\services.ps1" | select-string -pattern "Everyone","SERVICE_ALL_ACCESS","Users","dllsvc","dllhijackingservice.exe","RasAuto","Schedule",'^\s*$' -NotMatch >> "C:\Windows\Temp\serv.ps1"
+Get-Content "C:\Windows\Temp\serv.ps1" |  foreach-object {$_.Trim()}|ForEach-Object{cmd.exe /c sc.exe qc $_} | select-string -pattern "SERVICE_NAME","START_TYPE","BINARY_PATH_NAME","SERVICE_START_NAME"
 <#This block of code searches for service all access on services so we can modify the executable#>
 
 
